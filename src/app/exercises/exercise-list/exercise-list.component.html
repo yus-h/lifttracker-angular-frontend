@@ -1,0 +1,25 @@
+<div class="vspace3em"></div>
+<ng-template [ngIf]="authService.isAuthenticated()">
+<div class="row">
+  <div class="col-xs-12">
+    <button class="btn btn-success" routerLink="/exercises/new">Add Exercise</button>
+  </div>
+</div>
+<hr>
+</ng-template>
+
+<div class="row">
+  <div class="col-xs-12">
+
+
+    <app-exercise-item
+      *ngFor="let exerciseI of exercises"
+      [exercise]="exerciseI">
+    </app-exercise-item>
+
+    <button class="btn btn-success" (click)="onLoadMore()" [disabled]="lastPage">Load More...</button>
+
+
+  </div>
+</div>
+

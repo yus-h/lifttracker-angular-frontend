@@ -1,0 +1,26 @@
+<div [formGroup]="exerciseForm">
+
+  <div formArrayName="weightAndReps">
+    <div *ngFor="let exercise of exerciseForm.controls.weightAndReps.controls; let i=index">
+
+      <div class="row">
+        <app-set-rep-form [weightAndRepsForm]="exerciseForm.controls.weightAndReps.controls[i]"></app-set-rep-form>
+        <div class="form-group col-xs-2">
+          <span class="glyphicon glyphicon-remove pull-right" *ngIf="exerciseForm.controls.weightAndReps.controls.length > 1" (click)="removeSet(i)"></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <hr/>
+  <a (click)="addSet()" style="cursor: default">
+    Add set +
+  </a>
+
+  <!--<div class="margin-20">-->
+  <!--<div>exerciseForm details:-</div>-->
+  <!--<pre>Is exerciseForm valid?: <br>{{exerciseForm.valid | json}}</pre>-->
+  <!--<pre>exerciseForm value: <br>{{exerciseForm.value | json}}</pre>-->
+  <!--</div>-->
+</div>

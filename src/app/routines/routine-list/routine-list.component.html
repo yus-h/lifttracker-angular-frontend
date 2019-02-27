@@ -1,0 +1,22 @@
+<div class="vspace3em"></div>
+
+
+<div class="row">
+  <div class="col-xs-12">
+    <button class="btn btn-success" (click)="onAddRoutine()" routerLink="/routines/new">Add Routine</button>
+  </div>
+</div>
+
+<hr>
+
+<div class="row">
+  <div class="col-xs-12">
+
+
+    <app-routine-item
+      *ngFor="let routineI of routines"
+      [routine]="routineI">
+    </app-routine-item>
+  </div>
+</div>
+
