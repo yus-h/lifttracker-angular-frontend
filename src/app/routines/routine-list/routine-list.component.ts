@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Routine } from '../../shared/routine.model';
-import { Subscription } from 'rxjs/Subscription';
 import { RoutineService } from '../routine.service';
 
 @Component({
@@ -11,7 +10,7 @@ import { RoutineService } from '../routine.service';
 export class RoutineListComponent implements OnInit, OnDestroy {
 
   routines: Routine[];
-  private subscription: Subscription;
+  private subscription;
 
 
   constructor(private routineService: RoutineService) {

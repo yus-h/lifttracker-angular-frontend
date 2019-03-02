@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Exercise } from '../shared/exercise.model';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+
 import { AuthService } from '../auth/auth.service';
 import { ExercisesPaged } from '../shared/exercises.paged.model';
 import {MuscleGroup} from "../shared/musclegroup.model";
+import { Observable, Subject } from 'rxjs/index';
 
 @Injectable()
 export class ExerciseService {

@@ -3,7 +3,6 @@ import { ExerciseService } from '../exercise.service';
 import { Exercise } from '../../shared/exercise.model';
 import { AuthService } from '../../auth/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-exercise-list',
@@ -15,7 +14,7 @@ export class ExerciseListComponent implements OnInit, OnDestroy {
   lastPage = false;
   pageNumber = 0;
   exercises: Exercise[];
-  private subscription: Subscription;
+  private subscription;
 
 
   constructor(private exerciseService: ExerciseService,

@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Routine } from '../shared/routine.model';
 import { RoutineFormSubmission } from '../shared/routine-form-submission.model';
-import { Subject } from 'rxjs/Subject';
 import { AuthService } from '../auth/auth.service';
+import { Subject } from 'rxjs/index';
 
 @Injectable()
 export class RoutineService {

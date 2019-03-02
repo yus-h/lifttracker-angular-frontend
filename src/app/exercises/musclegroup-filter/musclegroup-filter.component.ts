@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MuscleGroup } from '../../shared/musclegroup.model';
 import { ExerciseService } from '../exercise.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-musclegroup-filter',
@@ -13,7 +12,7 @@ export class MusclegroupFilterComponent implements OnInit, OnDestroy {
 
   muscleGroups: MuscleGroup[];
   currentFilterParams = [];
-  paramsSubscription: Subscription; //todo why no import not flagged
+  paramsSubscription; //todo why no import not flagged
 
   constructor(private exerciseService: ExerciseService,
               private router: Router,
