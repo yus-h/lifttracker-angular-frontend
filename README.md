@@ -6,8 +6,9 @@ The app allows you to define exercises, and then create routines with reps and s
 This is a PoC app to demonstrate the following technologies working together:
 * Spring Boot
 * Angular 2+
+* NGRX state management
 * MySQL
-* Bootstrap
+* Bootstrap 4
 
 This is the front-end part of the application.
 

@@ -6,7 +6,9 @@ import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import {
   ExerciseActionTypes, GetAllMuscleGroups, GetAllMuscleGroupsFailed, GetAllMuscleGroupsSuccess, GetExercises,
   GetExercisesFailed,
-  GetExercisesSuccess
+  GetExercisesSuccess, SaveNewExercise, SaveNewExerciseFailed, SaveNewExerciseSuccess, UpdateExercise,
+  UpdateExerciseFailed,
+  UpdateExerciseSuccess
 } from '../actions/exercises';
 import { ApiService } from '../../core/services/ApiService';
 import * as fromRoot from '../index';
@@ -60,6 +62,39 @@ export class ExerciseEffects {
     )
   )
 
+
+  @Effect()
+  saveNewExercise: Observable<Action> = this.actions$.pipe(
+    ofType<SaveNewExercise>(ExerciseActionTypes.SaveNewExercise),
+    switchMap((action) => {
+        return this.apiService.saveNewExercise(action.payload)
+          .pipe(
+            map((response: any) => {
+              return response;
+            }),
+            map(res => new SaveNewExerciseSuccess(res)),
+            catchError(error => of(new SaveNewExerciseFailed(error)))
+          )
+      }
+    )
+  )
+
+  @Effect()
+  updateExercise: Observable<Action> = this.actions$.pipe(
+    ofType<UpdateExercise>(ExerciseActionTypes.UpdateExercise),
+    switchMap((action) => {
+        return this.apiService.updateExercise(action.payload)
+          .pipe(
+            map((response: any) => {
+              console.log('UPDATE RES', response);
+              return response;
+            }),
+            map(res => new UpdateExerciseSuccess(res)),
+            catchError(error => of(new UpdateExerciseFailed(error)))
+          )
+      }
+    )
+  )
 
 
 

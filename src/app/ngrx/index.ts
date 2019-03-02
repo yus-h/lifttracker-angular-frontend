@@ -38,6 +38,23 @@ export const selectAllMuscleGroups = createSelector(
 );
 
 
+export const savedExerciseStatus = createSelector(
+  selectExercises,
+  (state: fromExercises.State) => state.savedExerciseStatus
+);
+
+export const updateExerciseStatus = createSelector(
+  selectExercises,
+  (state: fromExercises.State) => state.updateExerciseStatus
+);
+
+
+export const selectCurrentExercise = createSelector(
+  selectExercises,
+  (state: fromExercises.State) => state.savedExercise
+);
+
+
 export const selectFilters = createSelector(
   selectExercises,
   (state: fromExercises.State) => state.filterMuscleGroupsApplied

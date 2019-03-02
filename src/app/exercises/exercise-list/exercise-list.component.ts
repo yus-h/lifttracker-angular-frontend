@@ -40,6 +40,7 @@ export class ExerciseListComponent implements OnInit, OnDestroy {
 
     this.getExercisesCall(true);
 
+    // TODO - need to show results once changed from new/ediit
     // Watch for the results changing
     this.exercisesObservable$ = this.store.pipe(select(selectList));
     this.exercisesSubscription = this.exercisesObservable$

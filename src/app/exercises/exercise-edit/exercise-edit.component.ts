@@ -1,24 +1,44 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ExerciseService } from '../exercise.service';
 import { Exercise } from '../../shared/exercise.model';
+import { select, Store } from '@ngrx/store';
+import * as fromRoot from '../../ngrx';
+import {
+  SaveNewExercise, SaveNewExerciseResetLoadingState, UpdateExercise,
+  UpdateExerciseResetLoadingState
+} from '../../ngrx/actions/exercises';
+import { Observable } from 'rxjs/index';
+import { savedExerciseStatus, selectCurrentExercise, updateExerciseStatus } from '../../ngrx/index';
+import { isNullOrUndefined } from 'util';
+import { withLatestFrom } from 'rxjs/internal/operators';
+import { StateSaveStatus } from '../../shared/enums/StateSaveStatus';
 
 
 @Component({
   selector: 'app-exercise-edit',
   templateUrl: './exercise-edit.component.html',
 })
-export class ExerciseEditComponent implements OnInit {
+export class ExerciseEditComponent implements OnInit, OnDestroy {
 
   id: number;
   editMode = false;
   form: FormGroup;
   // exerciseName = 'as';
 
+
+
+  newExerciseSaveObservable$: Observable<any>;
+  newExerciseSaveSubscription;
+
+  updateExerciseSaveObservable$: Observable<any>;
+  updateExerciseSaveSubscription;
+
   constructor(private route: ActivatedRoute,
               private router: Router,
-              private exerciseService: ExerciseService) {
+              private exerciseService: ExerciseService,
+              private store: Store<fromRoot.State>) {
   }
 
   ngOnInit() {
@@ -37,6 +57,38 @@ export class ExerciseEditComponent implements OnInit {
         this.initForm();
       }
     );
+
+    this.setupObservables();
+  }
+
+  private setupObservables() {
+    // Watch for new exercise being saved
+    this.newExerciseSaveObservable$ = this.store.pipe(select(savedExerciseStatus));
+    this.newExerciseSaveSubscription = this.newExerciseSaveObservable$
+      .pipe(withLatestFrom(this.store))
+      .subscribe(([res, store]) => {
+          if (!isNullOrUndefined(res) && res === StateSaveStatus.SAVE_SUCCESSFUL) {
+            this.store.dispatch(new SaveNewExerciseResetLoadingState());
+            console.log('CURRENT CHANGED', res);
+            this.router.navigate(['../' + store['exercises'].savedExercise.id], {relativeTo: this.route});
+          }
+        }
+      );
+
+
+    // Watch for exercise being edited
+    this.updateExerciseSaveObservable$ = this.store.pipe(select(updateExerciseStatus));
+    this.updateExerciseSaveSubscription = this.updateExerciseSaveObservable$
+      .pipe(withLatestFrom(this.store))
+      .subscribe(([res, store]) => {
+          if (!isNullOrUndefined(res) && res === StateSaveStatus.SAVE_SUCCESSFUL) {
+            console.log('EXERCISE UPDATED', res)
+            this.store.dispatch(new UpdateExerciseResetLoadingState());
+            this.router.navigate(['../../' + store['exercises'].savedExercise.id], {relativeTo: this.route});
+          }
+        }
+      );
+
   }
 
   private onSubmit() {
@@ -47,32 +99,9 @@ export class ExerciseEditComponent implements OnInit {
 
     // TODO - can we map this object to a model?
     if (this.editMode) {
-      this.exerciseService.updateExercise(this.form.value)
-        .subscribe(
-        (res: Exercise) => {
-          console.log('UPDATE SUCCESS:', res);
-          this.exerciseService.notifySubscribersOfChange(false);
-          this.router.navigate(['../../' + res.id], {relativeTo: this.route});
-        },
-        err => {
-          console.log('Error occured', err);
-        }
-      );
-
+      this.store.dispatch(new UpdateExercise(this.form.value));
     } else {
-      this.exerciseService.addExercise(this.form.value)
-        .subscribe(
-          // TODO how to differentiate between different status codes
-          (res: Exercise) => {
-          console.log('SUCCESS:');
-          console.log(res);
-            this.exerciseService.notifySubscribersOfChange(false);
-            this.router.navigate(['../' + res.id], {relativeTo: this.route});
-        },
-        err => {
-          console.log('Error occured', err);
-        }
-      );
+      this.store.dispatch(new SaveNewExercise(this.form.value));
     }
 
     this.editMode = false;
@@ -101,6 +130,13 @@ export class ExerciseEditComponent implements OnInit {
           console.log('Error occured.', err);
         });
     }
+
+
+  }
+
+  ngOnDestroy() {
+    if (this.newExerciseSaveSubscription) {this.newExerciseSaveSubscription.unsubscribe();}
+    if (this.updateExerciseSaveSubscription) { this.updateExerciseSaveSubscription.unsubscribe();}
   }
 
   private onCancel() {
