@@ -9,7 +9,7 @@
 
     <ng-template [ngIf]="authService.isAuthenticated()">
       <div class="text-right">
-        <button class="btn btn-success" routerLink="/exercises/new">Add Exercise</button>
+        <button class="btn btn-success mb-3" routerLink="/exercises/new">Add Exercise</button>
       </div>
     </ng-template>
 
@@ -23,7 +23,7 @@
         </app-exercise-item>
       <!--</ul>-->
 
-      <button class="btn btn-success" (click)="onLoadMore()" [disabled]="lastPage">Load More...</button>
+      <button class="btn btn-success mt-3" (click)="onLoadMore()" [disabled]="lastPage">Load More...</button>
       </div>
   </div>
 </div>
