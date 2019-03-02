@@ -1,31 +1,36 @@
-<nav class="navbnar navbar-default">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a routerLink="/" class="navbar-brand">lifttracker</a>
-    </div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+  <a routerLink="/" class="navbar-brand">lifttracker</a>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
     <div class="collapse navbar-collapse">
-      <ul class="nav navbar-nav">
-        <li routerLinkActive="active"><a routerLink="/exercises">Exercises</a></li>
-        <li routerLinkActive="active"><a routerLink="/routines">Routines</a></li>
+      <ul class="navbar-nav mr-auto">
+        <li routerLinkActive="active" class="nav-item">
+          <a class="nav-link" routerLink="/exercises">Exercises</a>
+        </li>
+        <li routerLinkActive="active" class="nav-item">
+          <a class="nav-link" routerLink="/routines">Routines</a>
+        </li>
       </ul>
-      <ul class="nav navbar-nav navbar-right">
+      <ul class="nav navbar-nav ml-auto">
 
         <ng-template [ngIf]="!authService.isAuthenticated()">
-          <li><a routerLink="/signup">Register</a></li>
-          <li><a routerLink="/signin">Login</a></li>
+          <li class="nav-item"><a class="nav-link" routerLink="/signup">Register</a></li>
+          <li class="nav-item"><a class="nav-link" routerLink="/signin">Login</a></li>
         </ng-template>
 
         <!-- what does ngIf in square brackets mean -->
         <!--<ng-template [ngIf]="authService.isAuthenticated()">-->
         <ng-template [ngIf]="authService.isAuthenticated()">
-        <li><a (click)="onLogout()">Logout</a></li>
-          <li>{{ username }}</li>
+        <li class="nav-item"><a (click)="onLogout()">Logout</a></li>
+          <!--<li> User: {{ username }}</li>-->
         </ng-template>
 
       </ul>
     </div>
 
-  </div>
 
 </nav>
