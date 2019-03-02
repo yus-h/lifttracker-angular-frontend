@@ -3,6 +3,9 @@ import { ExerciseService } from '../exercise.service';
 import { Exercise } from '../../shared/exercise.model';
 import { AuthService } from '../../auth/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../../ngrx';
+import { GetExercises } from '../../ngrx/actions/exercises';
 
 @Component({
   selector: 'app-exercise-list',
@@ -18,12 +21,17 @@ export class ExerciseListComponent implements OnInit, OnDestroy {
 
   constructor(private exerciseService: ExerciseService,
               private authService: AuthService,
-                private route: ActivatedRoute,
-                private router: Router
+              private route: ActivatedRoute,
+              private router: Router,
+              private store: Store<fromRoot.State>,
   ) {
   }
 
   ngOnInit() {
+
+
+    this.store.dispatch(new GetExercises('abc'));
+
 
     // TODO doesnt detect changes
 
