@@ -6,7 +6,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-musclegroup-filter',
   templateUrl: './musclegroup-filter.component.html',
-  styleUrls: ['./musclegroup-filter.component.css']
 })
 export class MusclegroupFilterComponent implements OnInit, OnDestroy {
 

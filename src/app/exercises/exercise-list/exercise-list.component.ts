@@ -7,7 +7,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-exercise-list',
   templateUrl: './exercise-list.component.html',
-  styleUrls: ['./exercise-list.component.css']
 })
 export class ExerciseListComponent implements OnInit, OnDestroy {
 

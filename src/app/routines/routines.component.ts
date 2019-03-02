@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-routines',
   templateUrl: './routines.component.html',
-  styleUrls: ['./routines.component.css']
 })
 export class RoutinesComponent implements OnInit {
 

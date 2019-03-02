@@ -5,7 +5,6 @@ import { ActivatedRoute, Params } from '@angular/router';
 @Component({
   selector: 'app-single-exercise-form',
   templateUrl: './single-exercise-form.component.html',
-  styleUrls: ['./single-exercise-form.component.css']
 })
 export class SingleExerciseFormComponent implements OnInit {
 

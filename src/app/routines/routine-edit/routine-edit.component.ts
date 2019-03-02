@@ -19,7 +19,6 @@ import moment from 'moment/src/moment';
 @Component({
   selector: 'app-routine-edit',
   templateUrl: './routine-edit.component.html',
-  styleUrls: ['./routine-edit.component.css']
 })
 export class RoutineEditComponent implements OnInit {
 

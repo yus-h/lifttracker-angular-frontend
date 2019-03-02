@@ -4,7 +4,6 @@ import { Routine } from '../../../shared/routine.model';
 @Component({
   selector: 'app-routine-item',
   templateUrl: './routine-item.component.html',
-  styleUrls: ['./routine-item.component.css']
 })
 export class RoutineItemComponent implements OnInit {
 
