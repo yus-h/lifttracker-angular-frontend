@@ -19,8 +19,6 @@ export class ExerciseListComponent implements OnInit, OnDestroy {
 
   lastPage = false;
   exercises: Exercise[];
-  private subscription;
-
 
   exercisesObservable$: Observable<any>;
   exercisesSubscription;
@@ -78,7 +76,6 @@ export class ExerciseListComponent implements OnInit, OnDestroy {
 
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
     if (this.exercisesSubscription) { this.exercisesSubscription.unsubscribe() }
     if (this.filtersSubscription) { this.filtersSubscription.unsubscribe() }
   }
