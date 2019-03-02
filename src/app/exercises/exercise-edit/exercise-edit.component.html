@@ -1,33 +1,32 @@
-<div class="row">
-  <div class="col-xs-12">
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <div class="row">
-        <div class="col-xs-12">
-          <button
-            type="submit"
-            class="btn btn-success"
-            [disabled]="!form.valid" >Save
-          </button>
-          <button type="button" class="btn btn-primary" (click)="onCancel()">Cancel</button>
-          <button type="button" class="btn btn-danger" (click)="onDelete()">Delete</button>
+<div class="card">
 
-        </div>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+
+    <div class="card-header">
+
+      <button
+        type="submit"
+        class="btn btn-success"
+        [disabled]="!form.valid">Save
+      </button>
+      <button type="button" class="btn btn-primary" (click)="onCancel()">Cancel</button>
+      <button type="button" class="btn btn-danger" (click)="onDelete()">Delete</button>
+    </div>
+
+    <div class="card-body">
+
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input
+          type="text"
+          id="name"
+          formControlName="name"
+          class="form-control">
       </div>
+    </div>
 
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="form-group">
-            <label for="name">Name1</label>
-            <input
-              type="text"
-              id="name"
-              formControlName="name"
-              class="form-control">
-          </div>
-        </div>
-      </div>
 
-    </form>
+  </form>
 
-  </div>
 </div>

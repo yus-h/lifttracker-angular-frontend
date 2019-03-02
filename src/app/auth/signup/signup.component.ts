@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { User } from '../../shared/user.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -9,7 +10,8 @@ import { User } from '../../shared/user.model';
 })
 export class SignupComponent implements OnInit {
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService,
+              private router: Router) { }
 
   ngOnInit() {
   }
@@ -32,6 +34,8 @@ export class SignupComponent implements OnInit {
           console.log('SUCCESS signed up:');
           console.log(res);
           // this.exerciseService.notifySubscribersOfChange();
+          this.router.navigate(['signin']);
+
           // this.router.navigate(['../' + res.id], {relativeTo: this.route});
         },
         err => {

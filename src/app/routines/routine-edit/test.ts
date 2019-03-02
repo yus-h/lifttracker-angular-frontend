@@ -54,7 +54,7 @@ export class App implements OnInit {
 }
 
 @Component({
-  selector: 'app-single-exercise-form',
+  selector: 'app-single-exercise-form2',
   template: `
   <div [formGroup]='subForm'>
     <div *ngFor="let exercise of subForm.controls.subOptions.controls; let i=index">

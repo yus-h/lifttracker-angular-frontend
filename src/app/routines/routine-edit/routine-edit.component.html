@@ -1,9 +1,12 @@
-<div class="vspace3em"></div>
-<div class="row">
-  <div class="col-xs-12">
-    <div class="margin-20">
-      <h4>Routine</h4>
-    </div>
+<div class="card">
+
+  <div class="card-header">
+    <h4>Routine</h4>
+  </div>
+
+
+  <div class="card-body">
+
     <form [formGroup]="myForm" novalidate (ngSubmit)="saveForm(myForm)">
       <div class="form-group">
         <label>Notes</label>
@@ -17,44 +20,42 @@
 
       <!--addresses-->
       <div formArrayName="exercises">
-        <div *ngFor="let exercise of myForm.controls.exercises.controls; let i=index" class="panel panel-default">
-          <div class="panel-heading">
-            <span>{{myForm.value.exercises[i].exerciseName}}</span>
-            <span class="glyphicon glyphicon-remove pull-right" *ngIf="myForm.controls.exercises.controls.length > 1"
+        <div *ngFor="let exercise of myForm.controls.exercises.controls; let i=index">
+          <div>
+            <h3>{{myForm.value.exercises[i].exerciseName}}</h3>
+            <span *ngIf="myForm.controls.exercises.controls.length > 1"
                   (click)="removeExercise(i)"></span>
           </div>
-          <div class="panel-body" [formGroupName]="i">
-            <app-single-exercise-form  [exerciseForm]="myForm.controls.exercises.controls[i]"></app-single-exercise-form>
+          <div [formGroupName]="i">
+            <app-single-exercise-form [exerciseForm]="myForm.controls.exercises.controls[i]"></app-single-exercise-form>
           </div>
         </div>
       </div>
 
 
-      <div class="row">
 
-        <div class="col-xs-12 col-sm-6">
           <select [ngModelOptions]="{standalone: true}" [ngModel]="selectedValue"
                   (ngModelChange)="onDropdownChange($event)" class="form-control">
             <option *ngFor="let category of options" [ngValue]=category>{{category.name}}</option>
           </select>
-          <a (click)="addExercise()" style="cursor: default">
-            Add another exercise +
-          </a>
 
-        </div>
+
+          <button type="button" class="btn btn-primary" (click)="addExercise()">Add another exercise +</button>
+
+
+      <div>
+        <button type="submit" class="btn btn-primary" [disabled]="!myForm.valid">Submit</button>
       </div>
 
 
-      <div class="margin-20">
-        <button type="submit" class="btn btn-primary pull-right" [disabled]="!myForm.valid">Submit</button>
-      </div>
-      <div class="clearfix"></div>
-
-      <div class="margin-20">
-        <div>myForm details:-</div>
-        <pre>Is myForm valid?: <br>{{myForm.valid | json}}</pre>
-        <pre>form value: <br>{{myForm.value | json}}</pre>
-      </div>
     </form>
   </div>
+</div>
+
+
+
+<div class="margin-20">
+  <div>myForm details:-</div>
+  <pre>Is myForm valid?: <br>{{myForm.valid | json}}</pre>
+  <pre>form value: <br>{{myForm.value | json}}</pre>
 </div>

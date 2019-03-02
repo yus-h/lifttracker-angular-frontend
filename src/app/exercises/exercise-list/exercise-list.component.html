@@ -1,25 +1,30 @@
-<div class="vspace3em"></div>
-<ng-template [ngIf]="authService.isAuthenticated()">
-<div class="row">
-  <div class="col-xs-12">
-    <button class="btn btn-success" routerLink="/exercises/new">Add Exercise</button>
-  </div>
-</div>
-<hr>
-</ng-template>
+<div class="card">
 
-<div class="row">
-  <div class="col-xs-12">
+    <div class="card-header">
+      <h1>Exercises</h1>
+    </div>
+
+  <div class="card-body">
 
 
-    <ul class="list-group">
-      <app-exercise-item
-        *ngFor="let exerciseI of exercises"
-        [exercise]="exerciseI">
-      </app-exercise-item>
-    </ul>
+    <ng-template [ngIf]="authService.isAuthenticated()">
+      <div class="text-right">
+        <button class="btn btn-success" routerLink="/exercises/new">Add Exercise</button>
+      </div>
+    </ng-template>
 
-    <button class="btn btn-success" (click)="onLoadMore()" [disabled]="lastPage">Load More...</button>
+
+      <div>
+
+      <!--<ul class="list-group">-->
+        <app-exercise-item
+          *ngFor="let exerciseI of exercises"
+          [exercise]="exerciseI">
+        </app-exercise-item>
+      <!--</ul>-->
+
+      <button class="btn btn-success" (click)="onLoadMore()" [disabled]="lastPage">Load More...</button>
+      </div>
   </div>
 </div>
 
