@@ -23,4 +23,22 @@ export function logger(reducer: ActionReducer<State>): ActionReducer<State> {
 export const metaReducers: MetaReducer<State>[] = [logger, storeFreeze];
 
 
+// Main state slices
 export const selectExercises = (state: State) => state.exercises;
+
+
+export const selectList = createSelector(
+  selectExercises,
+  (state: fromExercises.State) => state.exerciseList
+);
+
+export const selectAllMuscleGroups = createSelector(
+  selectExercises,
+  (state: fromExercises.State) => state.allMuscleGroups
+);
+
+
+export const selectFilters = createSelector(
+  selectExercises,
+  (state: fromExercises.State) => state.filterMuscleGroupsApplied
+);

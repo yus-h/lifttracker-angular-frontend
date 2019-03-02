@@ -4,6 +4,7 @@ import { HomeComponent } from './home/home.component';
 import { AppRoutingModule } from '../app-routing.module';
 import { AuthService } from '../auth/auth.service';
 import { CommonModule } from '@angular/common';
+import { ApiService } from './services/ApiService';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { CommonModule } from '@angular/common';
     HeaderComponent
   ],
   providers: [
-    AuthService
+    AuthService,
+    ApiService
   ]
 })
 export class CoreModule { }

@@ -2,6 +2,12 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MuscleGroup } from '../../shared/musclegroup.model';
 import { ExerciseService } from '../exercise.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { select, Store } from '@ngrx/store';
+import * as fromRoot from '../../ngrx';
+import { GetAllMuscleGroups, SetFilterMuscleActionGroups } from '../../ngrx/actions/exercises';
+import { Observable } from 'rxjs/index';
+import { selectAllMuscleGroups } from '../../ngrx/index';
+import { withLatestFrom } from 'rxjs/internal/operators';
 
 @Component({
   selector: 'app-musclegroup-filter',
@@ -13,21 +19,37 @@ export class MusclegroupFilterComponent implements OnInit, OnDestroy {
   currentFilterParams = [];
   paramsSubscription; //todo why no import not flagged
 
+
+  allMuscleGroupsObservable$: Observable<any>;
+  allMuscleGroupsSubscription;
+
   constructor(private exerciseService: ExerciseService,
               private router: Router,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute,
+              private store: Store<fromRoot.State>,) { }
 
   ngOnInit() {
 
-    this.exerciseService.getMuscleGroups().subscribe(
-      (data: MuscleGroup[]) => {
-        this.muscleGroups = data;
-        console.log('retrieved muscle groups', this.muscleGroups);
 
-      },
-      err => {
-        console.log('Error occured.');
-      });
+    this.store.dispatch(new GetAllMuscleGroups());
+
+
+
+    // Get all muscle groups for initial population
+    this.allMuscleGroupsObservable$ = this.store.pipe(select(selectAllMuscleGroups));
+    this.allMuscleGroupsSubscription = this.allMuscleGroupsObservable$
+      .pipe(withLatestFrom(this.store))
+      .subscribe(([res, store]) => {
+
+        this.muscleGroups = res.map(x =>{ return {
+            id: x.id,
+            name: x.name,
+            selected: store['exercises'].filterMuscleGroupsApplied.includes(x.id.toString())}
+          });
+
+        }
+      );
+
 
 
     this.paramsSubscription = this.route.queryParamMap.subscribe((params: any) => {
@@ -51,13 +73,17 @@ export class MusclegroupFilterComponent implements OnInit, OnDestroy {
 
       // filter page based on these filters
 
-      this.exerciseService.notifySubscribersOfChange(true);
+      this.store.dispatch(new SetFilterMuscleActionGroups(this.currentFilterParams));
+
+
+      // this.exerciseService.notifySubscribersOfChange(true);
 
     });
   }
 
   ngOnDestroy() {
     this.paramsSubscription.unsubscribe();
+    if (this.allMuscleGroupsSubscription) { this.allMuscleGroupsSubscription.unsubscribe()};
   }
 
   checkBoxChange($event: any, id: Number) {
@@ -71,7 +97,7 @@ export class MusclegroupFilterComponent implements OnInit, OnDestroy {
     // produces ?&filter=1&filter=2 etc.
 
     // TODO or is there a way to get state of all checkboxes without getting value from the URL
-    let updatedFilterParams: any = this.currentFilterParams;
+    let updatedFilterParams: any = JSON.parse(JSON.stringify(this.currentFilterParams));
     console.log('#########  updated filter params', updatedFilterParams);
     console.log('current filter params', this.currentFilterParams);
     // If is checked

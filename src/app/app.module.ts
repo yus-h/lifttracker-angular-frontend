@@ -7,7 +7,9 @@ import { AuthModule } from './auth/auth.module';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { StoreModule } from '@ngrx/store';
 import { metaReducers, reducers } from './ngrx/index';
-import { environment } from '../environments/environment'; // Angular CLI environemnt
+import { environment } from '../environments/environment';
+import { EffectsModule } from '@ngrx/effects';
+import { ExerciseEffects } from './ngrx/effects/exercises'; // Angular CLI environemnt
 /**
  * @imports - import our custom modules including CoreModule
  *
@@ -22,6 +24,11 @@ import { environment } from '../environments/environment'; // Angular CLI enviro
     AuthModule,
 
     StoreModule.forRoot(reducers, { metaReducers }),
+
+    EffectsModule.forRoot([
+      ExerciseEffects
+    ]),
+
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly:  environment.production,

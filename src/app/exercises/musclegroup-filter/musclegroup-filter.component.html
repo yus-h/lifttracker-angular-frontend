@@ -13,6 +13,7 @@
 
         <div *ngFor="let muscleGroup of muscleGroups">
           <input class="form-check-input"
+                 [checked]="muscleGroup.selected"
                  type="checkbox"
                  id={{muscleGroup.id}}
                  value={{muscleGroup.name}}

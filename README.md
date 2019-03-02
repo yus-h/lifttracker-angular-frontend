@@ -45,9 +45,8 @@ Once you have logged in, you will be able to create and modify your routine
 ### TODO
 
 * Correct authentication
-* Create exercise by muscle group
-* Upgrade Angular CLI
-* Add NGRX
+* Create exercise by muscle group and more details
+* Refactor remainder of app with NGRX
 
 ## Screenshots
 
