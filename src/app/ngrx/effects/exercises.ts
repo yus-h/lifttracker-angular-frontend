@@ -4,14 +4,19 @@ import { Action, Store } from '@ngrx/store';
 import { Observable, of, forkJoin } from 'rxjs';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import {
+  DeleteExercise, DeleteExerciseFailed, DeleteExerciseSuccess,
   ExerciseActionTypes, GetAllMuscleGroups, GetAllMuscleGroupsFailed, GetAllMuscleGroupsSuccess, GetExercises,
   GetExercisesFailed,
-  GetExercisesSuccess, SaveNewExercise, SaveNewExerciseFailed, SaveNewExerciseSuccess, UpdateExercise,
+  GetExercisesSuccess, GetSingleExercise, GetSingleExerciseFailed, GetSingleExerciseSuccess, SaveNewExercise,
+  SaveNewExerciseFailed,
+  SaveNewExerciseSuccess,
+  UpdateExercise,
   UpdateExerciseFailed,
   UpdateExerciseSuccess
 } from '../actions/exercises';
 import { ApiService } from '../../core/services/ApiService';
 import * as fromRoot from '../index';
+import { concatMap } from 'rxjs/internal/operators';
 
 
 @Injectable()
@@ -60,7 +65,7 @@ export class ExerciseEffects {
           )
       }
     )
-  )
+  );
 
 
   @Effect()
@@ -77,7 +82,7 @@ export class ExerciseEffects {
           )
       }
     )
-  )
+  );
 
   @Effect()
   updateExercise: Observable<Action> = this.actions$.pipe(
@@ -92,6 +97,42 @@ export class ExerciseEffects {
             map(res => new UpdateExerciseSuccess(res)),
             // TODO why fail being called
             catchError(error => of(new UpdateExerciseFailed(error)))
+          )
+      }
+    )
+  )
+
+
+  @Effect()
+  deleteExercise: Observable<Action> = this.actions$.pipe(
+    ofType<DeleteExercise>(ExerciseActionTypes.DeleteExercise),
+    // ofType<DeleteExercise>(),
+    concatMap((action) => {
+        return this.apiService.deleteExercise(action.payload)
+          .pipe(
+            map((response: any) => {
+              console.log('UPDATE RES', response);
+              return new DeleteExerciseSuccess(response);
+            }),
+            catchError(error => of(new DeleteExerciseFailed(error)))
+          )
+      }
+    )
+  )
+
+
+  @Effect()
+  getSingleExercise: Observable<Action> = this.actions$.pipe(
+    ofType<GetSingleExercise>(ExerciseActionTypes.GetSingleExercise),
+    // ofType<DeleteExercise>(),
+    concatMap((action) => {
+        return this.apiService.getSingleExercise(action.payload)
+          .pipe(
+            map((response: any) => {
+              console.log('SUCCESS', response);
+              return new GetSingleExerciseSuccess(response);
+            }),
+            catchError(error => of(new GetSingleExerciseFailed(error)))
           )
       }
     )

@@ -60,12 +60,19 @@ export class ApiService {
   }
 
   deleteExercise(exercise) {
+    console.log('DELL', exercise);
     const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.authService.getToken());
 
     // See https://stackoverflow.com/questions/46049082/how-to-add-a-body-to-angular-httpclient-delete-function
     return this.httpClient.request('delete', `${this.apiDomain}/exercises/${exercise.id}`, { body: exercise, headers: headers });
     // return this.httpClient.delete('http://localhost:8080/api/exercises/' + exercise.id, exercise);
   }
+
+  getSingleExercise(exerciseId) {
+    console.log('getting single id', exerciseId);
+    return this.httpClient.get(`${this.apiDomain}/exercises/${exerciseId}`);
+  }
+
 
 
 

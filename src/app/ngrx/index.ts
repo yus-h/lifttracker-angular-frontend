@@ -49,6 +49,17 @@ export const updateExerciseStatus = createSelector(
 );
 
 
+export const deleteExerciseStatus = createSelector(
+  selectExercises,
+  (state: fromExercises.State) => state.deleteExerciseStatus
+);
+
+export const singleExerciseStatus = createSelector(
+  selectExercises,
+  (state: fromExercises.State) => state.getSingleExerciseStatus
+);
+
+
 export const selectCurrentExercise = createSelector(
   selectExercises,
   (state: fromExercises.State) => state.savedExercise

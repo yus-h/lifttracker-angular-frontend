@@ -6,6 +6,11 @@ export enum ExerciseActionTypes {
   GetExercisesSuccess = '[ExerciseActionTypes] Get exercises success',
   GetExercisesFailed = '[ExerciseActionTypes] Get exercises failed',
 
+  GetSingleExercise = '[ExerciseActionTypes] Get Single Exercise',
+  GetSingleExerciseSuccess = '[ExerciseActionTypes] Get Single Exercise Success',
+  GetSingleExerciseFailed = '[ExerciseActionTypes] Get Single Exercise Failed',
+  GetSingleExerciseResetLoadingState = '[ExerciseActionTypes] Get Single Exercise Reset Loading State',
+
   ResetPaging = '[ExerciseActionTypes] Reset Paging',
 
   GetAllMuscleGroups = '[ExerciseActionTypes] Get All muscle groups',
@@ -16,6 +21,13 @@ export enum ExerciseActionTypes {
   SaveNewExerciseSuccess = '[ExerciseActionTypes] Save new exercise success',
   SaveNewExerciseFailed = '[ExerciseActionTypes] Save new exercise failed',
   SaveNewExerciseResetLoadingState = '[ExerciseActionTypes] Save new exercise Reset Loading State',
+
+
+  DeleteExercise = '[ExerciseActionTypes] Delete exercise',
+  DeleteExerciseSuccess = '[ExerciseActionTypes] Delete exercise success',
+  DeleteExerciseFailed = '[ExerciseActionTypes] Delete exercise failed',
+  DeleteExerciseResetLoadingState = '[ExerciseActionTypes] Delete exercise Reset Loading State',
+
 
   UpdateExercise = '[ExerciseActionTypes] Update exercise',
   UpdateExerciseSuccess = '[ExerciseActionTypes] Update exercise success',
@@ -48,6 +60,33 @@ export class GetExercisesFailed implements Action {
   }
 }
 
+export class GetSingleExercise implements Action {
+  readonly type = ExerciseActionTypes.GetSingleExercise;
+
+  constructor(public payload: any) {
+  }
+}
+
+export class GetSingleExerciseSuccess implements Action {
+  readonly type = ExerciseActionTypes.GetSingleExerciseSuccess;
+
+  constructor(public payload: any) {
+  }
+}
+
+export class GetSingleExerciseFailed implements Action {
+  readonly type = ExerciseActionTypes.GetSingleExerciseFailed;
+
+  constructor(public payload: any) {
+  }
+}
+
+export class GetSingleExerciseResetLoadingState implements Action {
+  readonly type = ExerciseActionTypes.GetSingleExerciseResetLoadingState;
+
+  constructor(public payload: any) {
+  }
+}
 
 
 
@@ -132,11 +171,44 @@ export class UpdateExerciseFailed implements Action {
 }
 
 export class UpdateExerciseResetLoadingState implements Action {
-  readonly type = ExerciseActionTypes.UpdateExerciseFailed;
+  readonly type = ExerciseActionTypes.UpdateExerciseResetLoadingState;
 
   constructor() {
   }
 }
+
+
+
+
+export class DeleteExercise implements Action {
+  readonly type = ExerciseActionTypes.DeleteExercise;
+
+  constructor(public payload: any) {
+  }
+}
+
+export class DeleteExerciseSuccess implements Action {
+  readonly type = ExerciseActionTypes.DeleteExerciseSuccess;
+
+  constructor(public payload: any) {
+  }
+}
+
+export class DeleteExerciseFailed implements Action {
+  readonly type = ExerciseActionTypes.DeleteExerciseFailed;
+
+  constructor(public payload: any) {
+  }
+}
+
+export class DeleteExerciseResetLoadingState implements Action {
+  readonly type = ExerciseActionTypes.DeleteExerciseResetLoadingState;
+
+  constructor() {
+  }
+}
+
+
 
 export class SetFilterMuscleActionGroups implements Action {
   readonly type = ExerciseActionTypes.SetFilterMuscleActionGroups;
@@ -149,6 +221,11 @@ export type ExerciseActionsUnion =
   | GetExercises
   | GetExercisesSuccess
   | GetExercisesFailed
+
+  | GetSingleExercise
+  | GetSingleExerciseSuccess
+  | GetSingleExerciseFailed
+  | GetSingleExerciseResetLoadingState
 
   | ResetPaging
 
@@ -166,5 +243,10 @@ export type ExerciseActionsUnion =
   | UpdateExerciseSuccess
   | UpdateExerciseFailed
   | UpdateExerciseResetLoadingState
+
+  | DeleteExercise
+  | DeleteExerciseSuccess
+  | DeleteExerciseFailed
+  | DeleteExerciseResetLoadingState
 
   | SetFilterMuscleActionGroups;

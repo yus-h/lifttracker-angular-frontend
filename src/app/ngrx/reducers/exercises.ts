@@ -18,6 +18,8 @@ export interface State {
   savedExercise: any; // track new exercise saved. TODO tbc if needed/merge with selected exercise later
   savedExerciseStatus: StateSaveStatus;
   updateExerciseStatus: StateSaveStatus;
+  deleteExerciseStatus: StateSaveStatus;
+  getSingleExerciseStatus: StateSaveStatus;
 }
 
 const initialState: State = {
@@ -32,6 +34,9 @@ const initialState: State = {
   savedExercise: undefined,
   savedExerciseStatus: StateSaveStatus.INITIAL_STATE,
   updateExerciseStatus: StateSaveStatus.INITIAL_STATE,
+  deleteExerciseStatus: StateSaveStatus.INITIAL_STATE,
+  getSingleExerciseStatus: StateSaveStatus.INITIAL_STATE,
+
 };
 
 export function reducer(state: State = initialState, action: ExerciseActionsUnion) {
@@ -147,7 +152,6 @@ export function reducer(state: State = initialState, action: ExerciseActionsUnio
 
       return {
         ...state,
-        savedExercise: action.payload,
         updateExerciseStatus: StateSaveStatus.SAVE_FAILED
       };
 
@@ -159,6 +163,80 @@ export function reducer(state: State = initialState, action: ExerciseActionsUnio
         ...state,
         updateExerciseStatus: StateSaveStatus.INITIAL_STATE
       };
+    }
+
+
+    case ExerciseActionTypes.DeleteExercise: {
+
+      return {
+        ...state,
+        deleteExerciseStatus: StateSaveStatus.SAVE_IN_PROGRESS
+      };
+
+    }
+
+    case ExerciseActionTypes.DeleteExerciseSuccess: {
+
+      return {
+        ...state,
+        deleteExerciseStatus: StateSaveStatus.SAVE_SUCCESSFUL
+      };
+
+    }
+
+    case ExerciseActionTypes.DeleteExerciseFailed: {
+
+      return {
+        ...state,
+        deleteExerciseStatus: StateSaveStatus.SAVE_FAILED
+      };
+
+    }
+
+    case ExerciseActionTypes.DeleteExerciseResetLoadingState: {
+
+      return {
+        ...state,
+        deleteExerciseStatus: StateSaveStatus.INITIAL_STATE
+      };
+    }
+
+
+    case ExerciseActionTypes.GetSingleExercise: {
+
+      return {
+        ...state,
+        getSingleExerciseStatus: StateSaveStatus.SAVE_IN_PROGRESS
+      };
+
+    }
+
+    case ExerciseActionTypes.GetSingleExerciseSuccess: {
+
+      return {
+        ...state,
+        savedExercise: action.payload,
+        getSingleExerciseStatus: StateSaveStatus.SAVE_SUCCESSFUL
+      };
+
+    }
+
+    case ExerciseActionTypes.GetSingleExerciseFailed: {
+
+      return {
+        ...state,
+        getSingleExerciseStatus: StateSaveStatus.SAVE_FAILED,
+      };
+
+    }
+
+    case ExerciseActionTypes.GetSingleExerciseResetLoadingState: {
+
+      return {
+        ...state,
+        getSingleExerciseStatus: StateSaveStatus.INITIAL_STATE,
+      };
+
     }
 
 

@@ -1,23 +1,36 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Exercise } from '../../shared/exercise.model';
 import { ExerciseService } from '../exercise.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Observable } from 'rxjs/index';
+import { select, Store } from '@ngrx/store';
+import * as fromRoot from '../../ngrx';
+import { singleExerciseStatus } from '../../ngrx/index';
+import { withLatestFrom } from 'rxjs/internal/operators';
+import { isNullOrUndefined } from 'util';
+import { StateSaveStatus } from '../../shared/enums/StateSaveStatus';
+import { GetSingleExercise } from '../../ngrx/actions/exercises';
 
 @Component({
   selector: 'app-exercise-detail',
   templateUrl: './exercise-detail.component.html',
 })
-export class ExerciseDetailComponent implements OnInit {
+export class ExerciseDetailComponent implements OnInit, OnDestroy {
 
   exercise: Exercise = {
     id: null,
     name: '' // prevents null in html string interpolation
   };
 
+  getSingleExerciseObservable$: Observable<any>;
+  getSingleExerciseSubscription;
+
+
 
   constructor(private exerciseService: ExerciseService,
               private route: ActivatedRoute,
-              private router: Router) { }
+              private router: Router,
+              private store: Store<fromRoot.State>) { }
 
   ngOnInit() {
 
@@ -25,17 +38,24 @@ export class ExerciseDetailComponent implements OnInit {
       (params: Params) => {
         const id = +params['id'];
         console.log('clicked on id..', id);
-
-        this.exerciseService.getExercise(id).subscribe(
-          data => {
-            this.exercise = data;
-            console.log('clicked on exercise', this.exercise);
-          },
-          err => {
-            console.log('Error occured.');
-          });
+        this.store.dispatch(new GetSingleExercise(id));
       }
     );
+
+    // Watch for get single exercise
+    this.getSingleExerciseObservable$ = this.store.pipe(select(singleExerciseStatus));
+    this.getSingleExerciseSubscription = this.getSingleExerciseObservable$
+      .pipe(withLatestFrom(this.store))
+      .subscribe(([res, store]) => {
+
+          if (!isNullOrUndefined(res) && res === StateSaveStatus.SAVE_SUCCESSFUL) {
+
+            let localExercise: Exercise;
+            localExercise =  store['exercises'].savedExercise;
+            this.exercise = localExercise;
+          }
+        }
+      );
   }
 
   onEditExercise() {

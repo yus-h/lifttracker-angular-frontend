@@ -46,8 +46,9 @@ Once you have logged in, you will be able to create and modify your routine
 ### TODO
 
 * Correct authentication
-* Create exercise by muscle group and more details
+* Create exercise by muscle group and more complex data structure for exercise (e.g. photos etc)
 * Refactor remainder of app with NGRX
+* Routine stats visualisation with d3
 
 ## Screenshots
 

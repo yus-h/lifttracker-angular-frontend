@@ -6,12 +6,16 @@ import { Exercise } from '../../shared/exercise.model';
 import { select, Store } from '@ngrx/store';
 import * as fromRoot from '../../ngrx';
 import {
-  GetExercises,
+  DeleteExercise, DeleteExerciseResetLoadingState,
+  GetExercises, GetSingleExercise,
   SaveNewExercise, SaveNewExerciseResetLoadingState, UpdateExercise,
   UpdateExerciseResetLoadingState
 } from '../../ngrx/actions/exercises';
 import { Observable } from 'rxjs/index';
-import { savedExerciseStatus, selectCurrentExercise, updateExerciseStatus } from '../../ngrx/index';
+import {
+  deleteExerciseStatus, savedExerciseStatus, selectCurrentExercise, singleExerciseStatus,
+  updateExerciseStatus
+} from '../../ngrx/index';
 import { isNullOrUndefined } from 'util';
 import { withLatestFrom } from 'rxjs/internal/operators';
 import { StateSaveStatus } from '../../shared/enums/StateSaveStatus';
@@ -28,17 +32,21 @@ export class ExerciseEditComponent implements OnInit, OnDestroy {
   form: FormGroup;
   // exerciseName = 'as';
 
-
-
   newExerciseSaveObservable$: Observable<any>;
   newExerciseSaveSubscription;
 
   updateExerciseSaveObservable$: Observable<any>;
   updateExerciseSaveSubscription;
 
+  deleteExerciseObservable$: Observable<any>;
+  deleteExerciseSubscription;
+
+  getSingleExerciseObservable$: Observable<any>;
+  getSingleExerciseSubscription;
+
+
   constructor(private route: ActivatedRoute,
               private router: Router,
-              private exerciseService: ExerciseService,
               private store: Store<fromRoot.State>) {
   }
 
@@ -93,6 +101,41 @@ export class ExerciseEditComponent implements OnInit, OnDestroy {
         }
       );
 
+    //Watch for exercise being deleted
+    this.deleteExerciseObservable$ = this.store.pipe(select(deleteExerciseStatus));
+    this.deleteExerciseSubscription = this.deleteExerciseObservable$
+      .pipe(withLatestFrom(this.store))
+      .subscribe(([res, store]) => {
+          if (!isNullOrUndefined(res) && res === StateSaveStatus.SAVE_SUCCESSFUL) {
+            this.store.dispatch(new DeleteExerciseResetLoadingState());
+            this.router.navigate(['../../'], {relativeTo: this.route});
+            this.store.dispatch(new GetExercises({}));
+          }
+        }
+      );
+
+    // Watch for get single exercise
+    this.getSingleExerciseObservable$ = this.store.pipe(select(singleExerciseStatus));
+    this.getSingleExerciseSubscription = this.getSingleExerciseObservable$
+      .pipe(withLatestFrom(this.store))
+      .subscribe(([res, store]) => {
+
+          if (!isNullOrUndefined(res) && res === StateSaveStatus.SAVE_SUCCESSFUL) {
+
+                let localExercise: Exercise;
+                localExercise =  store['exercises'].savedExercise;
+                console.log('LOCAL EXERCISE');
+                const exerciseName = localExercise.name;
+
+
+                // update value of the form. NOTE: setValue here.
+                this.form.setValue({
+                  'name': exerciseName,
+                  'id': localExercise.id
+                });
+          }
+        }
+      );
   }
 
   private onSubmit() {
@@ -118,21 +161,7 @@ export class ExerciseEditComponent implements OnInit, OnDestroy {
 
     // Get exercise name from server
     if (this.editMode) {
-      let localExercise: Exercise;
-      this.exerciseService.getExercise(this.id).subscribe(
-        data => {
-          localExercise = data;
-          const exerciseName = localExercise.name;
-
-          // update value of the form. NOTE: setValue here.
-          this.form.setValue({
-            'name': exerciseName,
-            'id': localExercise.id
-          });
-        },
-        err => {
-          console.log('Error occured.', err);
-        });
+      this.store.dispatch(new GetSingleExercise(this.id));
     }
 
 
@@ -141,6 +170,8 @@ export class ExerciseEditComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.newExerciseSaveSubscription) {this.newExerciseSaveSubscription.unsubscribe();}
     if (this.updateExerciseSaveSubscription) { this.updateExerciseSaveSubscription.unsubscribe();}
+    if (this.deleteExerciseSubscription) { this.deleteExerciseSubscription.unsubscribe(); }
+    if (this.getSingleExerciseSubscription) {this.getSingleExerciseSubscription.unsubscribe();}
   }
 
   private onCancel() {
@@ -151,20 +182,6 @@ export class ExerciseEditComponent implements OnInit, OnDestroy {
   }
 
   onDelete() {
-
-    console.log('going to delete', this.form.value);
-
-    this.exerciseService.deleteExercise(this.form.value)
-      .subscribe(
-        (res) => {
-          console.log('DELETE SUCCESS:', res);
-          this.exerciseService.notifySubscribersOfChange(false);
-          this.router.navigate(['../../'], {relativeTo: this.route});
-        },
-        err => {
-          console.log('Error occured', err);
-        }
-      );
-
+    this.store.dispatch(new DeleteExercise(this.form.value));
   }
 }
