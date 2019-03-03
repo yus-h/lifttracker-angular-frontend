@@ -17,7 +17,6 @@ import { isNullOrUndefined } from 'util';
 })
 export class ExerciseListComponent implements OnInit, OnDestroy {
 
-  lastPage = false;
   exercises: Exercise[];
 
   exercisesObservable$: Observable<any>;
@@ -36,20 +35,10 @@ export class ExerciseListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.getExercisesCall(true);
+    this.getExercisesCall();
 
-    // TODO - need to show results once changed from new/ediit
     // Watch for the results changing
     this.exercisesObservable$ = this.store.pipe(select(selectList));
-    this.exercisesSubscription = this.exercisesObservable$
-      .pipe(withLatestFrom(this.store))
-      .subscribe(([res, store]) => {
-          this.exercises = isNullOrUndefined(this.exercises) ? this.exercises = res : this.exercises = this.exercises.concat(res);
-          if (store && store['exercises'] && store['exercises'].lastPage) {
-            this.lastPage = true;
-          }
-        }
-      );
 
 
     // Watch for the filters changing
@@ -57,20 +46,14 @@ export class ExerciseListComponent implements OnInit, OnDestroy {
     this.filtersSubscription = this.filtersObservable$
       .subscribe((res) => {
           // New call with reset paging
-          this.getExercisesCall(true);
+          this.getExercisesCall();
         }
       );
 
   }
 
 
-  getExercisesCall(resetPaging) {
-    if (resetPaging) {
-      this.store.dispatch(new ResetPaging());
-      this.exercises = [];
-      this.lastPage = false;
-    }
-
+  getExercisesCall() {
     this.store.dispatch(new GetExercises({}));
   }
 
@@ -80,8 +63,5 @@ export class ExerciseListComponent implements OnInit, OnDestroy {
     if (this.filtersSubscription) { this.filtersSubscription.unsubscribe() }
   }
 
-  onLoadMore() {
-    this.getExercisesCall(false);
 
-  }
 }

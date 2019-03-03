@@ -90,6 +90,7 @@ export class ExerciseEffects {
               return response;
             }),
             map(res => new UpdateExerciseSuccess(res)),
+            // TODO why fail being called
             catchError(error => of(new UpdateExerciseFailed(error)))
           )
       }

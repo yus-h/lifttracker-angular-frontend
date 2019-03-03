@@ -16,11 +16,13 @@ export class ApiService {
 
   getExercises(payload: any, currentPageNumber, muscleGroupFilterParams: string[]) {
 
-    if (isNullOrUndefined(currentPageNumber)) {
-      currentPageNumber = 0;
-    } else {
-       currentPageNumber ++;
-    }
+    // TODO IGNORE PAGING FOR NOW - just return all
+    // if (isNullOrUndefined(currentPageNumber)) {
+    //   currentPageNumber = 0;
+    // } else {
+    //    currentPageNumber ++;
+    // }
+    currentPageNumber = 0;
 
     let qString = '&filters=';
 
@@ -35,7 +37,7 @@ export class ApiService {
 
     console.log('qstring', qString);
 
-    let url = `${this.apiDomain}/exercises?page=${currentPageNumber}&size=3${qString}`; // + qString
+    let url = `${this.apiDomain}/exercises?page=${currentPageNumber}&size=200${qString}`; // + qString
     console.log('URL', url);
 
     return this.httpClient.get<ExercisesPaged>(url);

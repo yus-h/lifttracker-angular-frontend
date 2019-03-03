@@ -6,6 +6,7 @@ import { Exercise } from '../../shared/exercise.model';
 import { select, Store } from '@ngrx/store';
 import * as fromRoot from '../../ngrx';
 import {
+  GetExercises,
   SaveNewExercise, SaveNewExerciseResetLoadingState, UpdateExercise,
   UpdateExerciseResetLoadingState
 } from '../../ngrx/actions/exercises';
@@ -71,6 +72,8 @@ export class ExerciseEditComponent implements OnInit, OnDestroy {
             this.store.dispatch(new SaveNewExerciseResetLoadingState());
             console.log('CURRENT CHANGED', res);
             this.router.navigate(['../' + store['exercises'].savedExercise.id], {relativeTo: this.route});
+            this.store.dispatch(new GetExercises({}));
+
           }
         }
       );
@@ -85,6 +88,7 @@ export class ExerciseEditComponent implements OnInit, OnDestroy {
             console.log('EXERCISE UPDATED', res)
             this.store.dispatch(new UpdateExerciseResetLoadingState());
             this.router.navigate(['../../' + store['exercises'].savedExercise.id], {relativeTo: this.route});
+            this.store.dispatch(new GetExercises({}));
           }
         }
       );

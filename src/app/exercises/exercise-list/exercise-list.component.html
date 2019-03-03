@@ -18,12 +18,11 @@
 
       <!--<ul class="list-group">-->
         <app-exercise-item
-          *ngFor="let exerciseI of exercises"
+          *ngFor="let exerciseI of (exercisesObservable$ | async)"
           [exercise]="exerciseI">
         </app-exercise-item>
       <!--</ul>-->
 
-      <button class="btn btn-success mt-3" (click)="onLoadMore()" [disabled]="lastPage">Load More...</button>
       </div>
   </div>
 </div>
