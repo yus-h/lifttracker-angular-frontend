@@ -1,10 +1,21 @@
-<div [formGroup]="exerciseForm">
+<div [formGroup]="exerciseForm"
+     class="ml-4"
+>
 
   <div formArrayName="weightAndReps">
     <div *ngFor="let exercise of exerciseForm.controls.weightAndReps.controls; let i=index">
 
+      <div class="row">
+
         <app-set-rep-form [weightAndRepsForm]="exerciseForm.controls.weightAndReps.controls[i]"></app-set-rep-form>
-          <span *ngIf="exerciseForm.controls.weightAndReps.controls.length > 1" (click)="removeSet(i)"></span>
+          <button
+            *ngIf="exerciseForm.controls.weightAndReps.controls.length > 1"
+            type="button"
+            class="btn btn-danger ml-auto pt-0 btnRemoveSet align-self-center"
+            (click)="removeSet(i)">X
+          </button>
+
+      </div>
 
     </div>
   </div>

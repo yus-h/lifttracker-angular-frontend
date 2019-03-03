@@ -1,17 +1,20 @@
-<!--<div class="row">-->
 
 <div [formGroup]="weightAndRepsForm">
 
-    <div class="form-group col-xs-5">
-    <label>weight</label>
+  <div class="row">
+
+  <div class="form-group col-sm">
+    <label><strong>weight</strong></label>
     <input type="text" class="form-control" formControlName="weight">
     <small [hidden]="weightAndRepsForm.controls.weight.valid" class="text-danger">
       Weight is required
     </small>
   </div>
-  <div class="form-group col-xs-5">
-    <label>reps</label>
+  <div class="form-group col-sm">
+    <label><strong>reps</strong></label>
     <input type="text" class="form-control" formControlName="reps">
+  </div>
+
   </div>
 
 

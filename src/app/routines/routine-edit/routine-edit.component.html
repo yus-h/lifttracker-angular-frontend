@@ -18,16 +18,24 @@
         <input type="date" class="form-control" formControlName="date">
       </div>
 
-      <!--addresses-->
+      <hr>
+
       <div formArrayName="exercises">
         <div *ngFor="let exercise of myForm.controls.exercises.controls; let i=index">
-          <div>
-            <h3>{{myForm.value.exercises[i].exerciseName}}</h3>
-            <span *ngIf="myForm.controls.exercises.controls.length > 1"
-                  (click)="removeExercise(i)"></span>
+          <div class="row">
+            <h3 class="ml-4"><u>{{myForm.value.exercises[i].exerciseName}}</u></h3>
+
+            <button
+              *ngIf="myForm.controls.exercises.controls.length > 1"
+              type="button"
+              class="btn btn-danger ml-auto"
+              (click)="removeExercise(i)">X
+            </button>
           </div>
           <div [formGroupName]="i">
-            <app-single-exercise-form [exerciseForm]="myForm.controls.exercises.controls[i]"></app-single-exercise-form>
+            <app-single-exercise-form
+              [exerciseForm]="myForm.controls.exercises.controls[i]">
+            </app-single-exercise-form>
           </div>
         </div>
       </div>
