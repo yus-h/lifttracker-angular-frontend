@@ -230,6 +230,16 @@ export function reducer(state: State = initialState, action: ExerciseActionsUnio
 
     }
 
+
+    case ExerciseActionTypes.ResetSingleExercise: {
+
+      return {
+        ...state,
+        savedExercise: initialState.savedExercise,
+      };
+
+    }
+
     case ExerciseActionTypes.GetSingleExerciseResetLoadingState: {
 
       return {

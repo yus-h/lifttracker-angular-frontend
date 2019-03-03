@@ -61,4 +61,8 @@ export class ExerciseDetailComponent implements OnInit, OnDestroy {
   onEditExercise() {
     this.router.navigate(['edit'], {relativeTo: this.route});
   }
+
+  ngOnDestroy() {
+    if (this.getSingleExerciseSubscription) { this.getSingleExerciseSubscription.unsubscribe(); }
+  }
 }

@@ -7,7 +7,7 @@ import { select, Store } from '@ngrx/store';
 import * as fromRoot from '../../ngrx';
 import {
   DeleteExercise, DeleteExerciseResetLoadingState,
-  GetExercises, GetSingleExercise,
+  GetExercises, GetSingleExercise, ResetSingleExercise,
   SaveNewExercise, SaveNewExerciseResetLoadingState, UpdateExercise,
   UpdateExerciseResetLoadingState
 } from '../../ngrx/actions/exercises';
@@ -122,17 +122,20 @@ export class ExerciseEditComponent implements OnInit, OnDestroy {
 
           if (!isNullOrUndefined(res) && res === StateSaveStatus.SAVE_SUCCESSFUL) {
 
+              console.log('RES', res);
+
                 let localExercise: Exercise;
                 localExercise =  store['exercises'].savedExercise;
                 console.log('LOCAL EXERCISE');
-                const exerciseName = localExercise.name;
+                if (!isNullOrUndefined(localExercise)) { // TODO - why getting called on ResetExercise
 
-
-                // update value of the form. NOTE: setValue here.
-                this.form.setValue({
-                  'name': exerciseName,
-                  'id': localExercise.id
-                });
+                  const exerciseName = localExercise.name;
+                  // update value of the form. NOTE: setValue here.
+                  this.form.setValue({
+                    'name': exerciseName,
+                    'id': localExercise.id
+                  });
+                }
           }
         }
       );
@@ -162,6 +165,8 @@ export class ExerciseEditComponent implements OnInit, OnDestroy {
     // Get exercise name from server
     if (this.editMode) {
       this.store.dispatch(new GetSingleExercise(this.id));
+    } else {
+      this.store.dispatch(new ResetSingleExercise());
     }
 
 

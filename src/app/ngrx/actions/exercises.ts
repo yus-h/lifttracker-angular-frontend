@@ -11,6 +11,8 @@ export enum ExerciseActionTypes {
   GetSingleExerciseFailed = '[ExerciseActionTypes] Get Single Exercise Failed',
   GetSingleExerciseResetLoadingState = '[ExerciseActionTypes] Get Single Exercise Reset Loading State',
 
+  ResetSingleExercise = '[ExerciseActionTypes] Reset Single Exercise',
+
   ResetPaging = '[ExerciseActionTypes] Reset Paging',
 
   GetAllMuscleGroups = '[ExerciseActionTypes] Get All muscle groups',
@@ -87,6 +89,15 @@ export class GetSingleExerciseResetLoadingState implements Action {
   constructor(public payload: any) {
   }
 }
+
+
+export class ResetSingleExercise implements Action {
+  readonly type = ExerciseActionTypes.ResetSingleExercise;
+
+  constructor() {
+  }
+}
+
 
 
 
@@ -226,6 +237,8 @@ export type ExerciseActionsUnion =
   | GetSingleExerciseSuccess
   | GetSingleExerciseFailed
   | GetSingleExerciseResetLoadingState
+
+  | ResetSingleExercise
 
   | ResetPaging
 
